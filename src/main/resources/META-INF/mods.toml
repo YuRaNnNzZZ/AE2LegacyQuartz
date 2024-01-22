@@ -1,0 +1,30 @@
+modLoader="${loader_name}"
+loaderVersion="${loader_version_range}"
+license="All Rights Reserved"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="AE2 Legacy Quartz"
+credits="TeamAppliedEnergistics"
+authors="YuRaNnNzZZ"
+description="This mod adds Certus Quartz Ore and Nether Quartz Dust from earlier versions of AE2."
+
+[[dependencies.${mod_id}]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version_range}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="ae2"
+    mandatory=true
+    versionRange="${ae2_version_range}"
+    ordering="NONE"
+    side="BOTH"
