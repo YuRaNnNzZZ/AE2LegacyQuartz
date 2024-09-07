@@ -2,9 +2,8 @@ package ru.yurannnzzz.ae2quartz.data.server
 
 import net.minecraft.core.HolderSet
 import net.minecraft.core.registries.Registries
-import net.minecraft.data.worldgen.BootstapContext
+import net.minecraft.data.worldgen.BootstrapContext
 import net.minecraft.resources.ResourceKey
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.BiomeTags
 import net.minecraft.tags.BlockTags
 import net.minecraft.world.level.levelgen.GenerationStep
@@ -17,10 +16,9 @@ import net.minecraft.world.level.levelgen.placement.HeightRangePlacement
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement
 import net.minecraft.world.level.levelgen.placement.PlacedFeature
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest
-import net.minecraftforge.common.world.BiomeModifier
-import net.minecraftforge.common.world.ForgeBiomeModifiers.AddFeaturesBiomeModifier
-import net.minecraftforge.registries.ForgeRegistries
-import ru.yurannnzzz.ae2quartz.AE2QuartzMod.MOD_ID
+import net.neoforged.neoforge.common.world.BiomeModifier
+import net.neoforged.neoforge.registries.NeoForgeRegistries
+import ru.yurannnzzz.ae2quartz.AE2QuartzMod.loc
 import ru.yurannnzzz.ae2quartz.registry.ModBlocks
 
 /*
@@ -32,11 +30,11 @@ private object ConfiguredFeatures {
 	val QUARTZ_ORE = key("quartz_ore")
 
 	private fun key(name: String): ResourceKey<ConfiguredFeature<*, *>> {
-		return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation(MOD_ID, name))
+		return ResourceKey.create(Registries.CONFIGURED_FEATURE, loc(name))
 	}
 }
 
-fun registerConfiguredFeatures(context: BootstapContext<ConfiguredFeature<*, *>>) {
+fun registerConfiguredFeatures(context: BootstrapContext<ConfiguredFeature<*, *>>) {
 	val target = listOf(
 		OreConfiguration.target(
 			TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES),
@@ -58,11 +56,11 @@ private object PlacedFeatures {
 	val QUARTZ_ORE = key("quartz_ore")
 
 	private fun key(name: String): ResourceKey<PlacedFeature> {
-		return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation(MOD_ID, name))
+		return ResourceKey.create(Registries.PLACED_FEATURE, loc(name))
 	}
 }
 
-fun registerPlacedFeatures(context: BootstapContext<PlacedFeature>) {
+fun registerPlacedFeatures(context: BootstrapContext<PlacedFeature>) {
 	val configured = context.lookup(Registries.CONFIGURED_FEATURE)
 
 	context.register(
@@ -81,17 +79,17 @@ private object BiomeModifiers {
 	val QUARTZ_ORE = key("quartz_ore")
 
 	private fun key(name: String): ResourceKey<BiomeModifier> {
-		return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, ResourceLocation(MOD_ID, name))
+		return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, loc(name))
 	}
 }
 
-fun registerBiomeModifiers(context: BootstapContext<BiomeModifier>) {
+fun registerBiomeModifiers(context: BootstrapContext<BiomeModifier>) {
 	val placed = context.lookup(Registries.PLACED_FEATURE)
 	val biomes = context.lookup(Registries.BIOME)
 
 	context.register(
 		BiomeModifiers.QUARTZ_ORE,
-		AddFeaturesBiomeModifier(
+		net.neoforged.neoforge.common.world.BiomeModifiers.AddFeaturesBiomeModifier(
 			biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
 			HolderSet.direct(placed.getOrThrow(PlacedFeatures.QUARTZ_ORE)),
 			GenerationStep.Decoration.UNDERGROUND_ORES

@@ -1,9 +1,9 @@
 package ru.yurannnzzz.ae2quartz.data.client
 
 import net.minecraft.data.PackOutput
-import net.minecraftforge.client.model.generators.BlockStateProvider
-import net.minecraftforge.client.model.generators.ConfiguredModel
-import net.minecraftforge.common.data.ExistingFileHelper
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel
+import net.neoforged.neoforge.common.data.ExistingFileHelper
 import ru.yurannnzzz.ae2quartz.registry.ModBlocks
 
 class ModBlockStateProvider(output: PackOutput?, modid: String?, exFileHelper: ExistingFileHelper?) :

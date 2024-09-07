@@ -20,6 +20,7 @@ build
 # other
 eclipse
 run
+runs
 run-data
 
 design/
@@ -27,6 +28,3 @@ libs/
 logs/
 
 /src/generated/resources
-
-# Files from Forge MDK
-forge*changelog.txt

@@ -2,18 +2,18 @@ package ru.yurannnzzz.ae2quartz.data.client
 
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceLocation
-import net.minecraftforge.client.model.generators.ItemModelProvider
-import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile
-import net.minecraftforge.common.data.ExistingFileHelper
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider
+import net.neoforged.neoforge.client.model.generators.ModelFile
+import net.neoforged.neoforge.common.data.ExistingFileHelper
 
 class ModItemModelProvider(output: PackOutput?, modid: String?, existingFileHelper: ExistingFileHelper?) :
 	ItemModelProvider(output, modid, existingFileHelper) {
 	override fun registerModels() {
-		val netherQuartzDustTexture = ResourceLocation("ae2", "item/nether_quartz_dust")
+		val netherQuartzDustTexture = ResourceLocation.fromNamespaceAndPath("ae2", "item/nether_quartz_dust")
 		existingFileHelper.trackGenerated(netherQuartzDustTexture, TEXTURE)
 
 		getBuilder(modLoc("item/nether_quartz_dust").toString())
-			.parent(UncheckedModelFile("item/generated"))
+			.parent(ModelFile.UncheckedModelFile("item/generated"))
 			.texture("layer0", netherQuartzDustTexture)
 
 		withExistingParent(

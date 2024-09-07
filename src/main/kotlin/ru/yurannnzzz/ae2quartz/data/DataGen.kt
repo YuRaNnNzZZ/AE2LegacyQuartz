@@ -4,12 +4,11 @@ import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.loot.LootTableProvider
 import net.minecraft.data.loot.LootTableProvider.SubProviderEntry
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
-import net.minecraftforge.common.data.BlockTagsProvider
-import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider
-import net.minecraftforge.data.event.GatherDataEvent
-import net.minecraftforge.registries.ForgeRegistries
+import net.neoforged.neoforge.common.data.BlockTagsProvider
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider
+import net.neoforged.neoforge.data.event.GatherDataEvent
+import net.neoforged.neoforge.registries.NeoForgeRegistries
 import ru.yurannnzzz.ae2quartz.AE2QuartzMod.MOD_ID
 import ru.yurannnzzz.ae2quartz.data.client.English
 import ru.yurannnzzz.ae2quartz.data.client.ModBlockStateProvider
@@ -25,39 +24,38 @@ import ru.yurannnzzz.ae2quartz.data.server.registerPlacedFeatures
 
 fun onDataGather(event: GatherDataEvent) {
 	val gen = event.generator
-	val efh = event.existingFileHelper
-	val out = gen.packOutput
 
-	gen.addProvider(event.includeClient(), ModBlockStateProvider(out, MOD_ID, efh))
-	gen.addProvider(event.includeClient(), ModItemModelProvider(out, MOD_ID, efh))
-	gen.addProvider(event.includeClient(), English(out, MOD_ID))
-	gen.addProvider(event.includeClient(), Russian(out, MOD_ID))
+	gen.addProvider(event.includeClient(), ModBlockStateProvider(gen.packOutput, MOD_ID, event.existingFileHelper))
+	gen.addProvider(event.includeClient(), ModItemModelProvider(gen.packOutput, MOD_ID, event.existingFileHelper))
+	gen.addProvider(event.includeClient(), English(gen.packOutput, MOD_ID))
+	gen.addProvider(event.includeClient(), Russian(gen.packOutput, MOD_ID))
 
 	gen.addProvider(
 		event.includeServer(),
-		ModRecipeProvider(out)
+		ModRecipeProvider(gen.packOutput, event.lookupProvider)
 	)
 	val blockTagsProvider: BlockTagsProvider = gen.addProvider(
 		event.includeServer(),
-		ModBlockTagsProvider(out, event.lookupProvider, MOD_ID, efh)
+		ModBlockTagsProvider(gen.packOutput, event.lookupProvider, MOD_ID, event.existingFileHelper)
 	)
 	gen.addProvider(
 		event.includeServer(),
-		ModItemTagsProvider(out, event.lookupProvider, blockTagsProvider.contentsGetter(), MOD_ID, efh)
+		ModItemTagsProvider(gen.packOutput, event.lookupProvider, blockTagsProvider.contentsGetter(), MOD_ID, event.existingFileHelper)
 	)
 	gen.addProvider(
 		event.includeServer(),
 		LootTableProvider(
-			out,
-			emptySet<ResourceLocation>(),
-			listOf(SubProviderEntry({ ModBlockLootProvider() }, LootContextParamSets.BLOCK))
+			gen.packOutput,
+			mutableSetOf(),
+			listOf(SubProviderEntry({ ModBlockLootProvider(event.lookupProvider) }, LootContextParamSets.BLOCK)),
+			event.lookupProvider
 		)
 	)
 
 	val registrySetBuilder = RegistrySetBuilder()
 		.add(Registries.CONFIGURED_FEATURE, ::registerConfiguredFeatures)
 		.add(Registries.PLACED_FEATURE, ::registerPlacedFeatures)
-		.add(ForgeRegistries.Keys.BIOME_MODIFIERS, ::registerBiomeModifiers)
+		.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ::registerBiomeModifiers)
 	event.generator.addProvider(
 		event.includeServer(),
 		DatapackBuiltinEntriesProvider(

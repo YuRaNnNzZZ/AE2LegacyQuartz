@@ -1,7 +1,7 @@
 package ru.yurannnzzz.ae2quartz.data.client
 
 import net.minecraft.data.PackOutput
-import net.minecraftforge.common.data.LanguageProvider
+import net.neoforged.neoforge.common.data.LanguageProvider
 import ru.yurannnzzz.ae2quartz.registry.ModBlocks
 import ru.yurannnzzz.ae2quartz.registry.ModItems
 
